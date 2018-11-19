@@ -154,6 +154,20 @@ class DBHelper {
     }
 
     /**
+     * Restaurant image URL compressed to 80% of original image.
+     */
+    static smallImageUrlForRestaurant(restaurant) {
+        return (`/img/80/${restaurant.photograph}`);
+    }
+
+    /**
+     * Restaurant image URL compressed to 50% of original image.
+     */
+    static tinyImageUrlForRestaurant(restaurant) {
+        return (`/img/50/${restaurant.photograph}`);
+    }
+
+    /**
      * Map marker for a restaurant.
      */
     static mapMarkerForRestaurant(restaurant, map) {
