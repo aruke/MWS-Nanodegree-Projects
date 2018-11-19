@@ -89,13 +89,8 @@ nav h1 a {
 }
 
 /* Map Container */
-.inside #map-container {
+#map-container {
     background: blue none repeat scroll 0 0;
-    height: 87%;
-    position: fixed;
-    right: 0;
-    top: 80px;
-    width: 50%;
 }
 
 /* Map Div */
@@ -104,12 +99,6 @@ nav h1 a {
     height: 50vh;
     width: 100%;
     background-color: #ccc;
-}
-
-.inside #map {
-    background-color: #ccc;
-    height: 100%;
-    width: 100%;
 }
 
 /* Restaurant Filtering */
@@ -242,13 +231,26 @@ nav h1 a {
 
 /* ====================== Restaurant Details ====================== */
 
+.details #map-container {
+    background: blue none repeat scroll 0 0;
+    height: 40vh;
+    width: 100%;
+    position: relative;
+}
+
+.details #map {
+    height: 100%;
+    width: 100%;
+}
+
 #breadcrumb {
-    padding: 10px 40px 16px;
+    padding: 20px 40px;
     list-style: none;
     background-color: #eee;
     font-size: 17px;
     margin: 0;
-    width: calc(50% - 80px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Display list items side by side */
@@ -275,17 +277,12 @@ nav h1 a {
     text-decoration: underline;
 }
 
-.inside header {
-    position: fixed;
-    top: 0;
+#restaurant-container {
+    border-bottom: 1px solid #d9d9d9;
+    border-top: 1px solid #fff;
+    padding: 20px 10px;
     width: 100%;
-    z-index: 1000;
-}
-
-.inside #footer {
-    bottom: 0;
-    position: absolute;
-    width: 50%;
+    box-sizing: border-box;
 }
 
 #restaurant-name {
@@ -300,7 +297,7 @@ nav h1 a {
 }
 
 #restaurant-img {
-    width: 90%;
+    width: 100%;
 }
 
 #restaurant-address {
@@ -315,24 +312,21 @@ nav h1 a {
     font-weight: 300;
     letter-spacing: 10px;
     margin: 0 0 20px;
-    padding: 2px 0;
+    padding: 5px 0;
     text-align: center;
     text-transform: uppercase;
-    width: 90%;
-}
-
-#restaurant-container, #reviews-container {
-    border-bottom: 1px solid #d9d9d9;
-    border-top: 1px solid #fff;
-    padding: 140px 40px 30px;
-    width: 50%;
+    width: 100%;
 }
 
 #reviews-container {
-    padding: 30px 40px 80px;
+    border-bottom: 1px solid #d9d9d9;
+    border-top: 1px solid #fff;
+    padding: 20px 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-#reviews-container h2 {
+#reviews-container h3 {
     color: #f58500;
     font-size: 24pt;
     font-weight: 300;
@@ -352,9 +346,8 @@ nav h1 a {
     list-style-type: none;
     margin: 0 0 30px;
     overflow: hidden;
-    padding: 0 20px 20px;
+    padding: 20px 20px;
     position: relative;
-    width: 85%;
 }
 
 #reviews-list li p {
@@ -376,3 +369,8 @@ nav h1 a {
     text-align: center;
     text-transform: uppercase;
 }
+
+.details #footer {
+
+}
+
