@@ -177,9 +177,13 @@ class DBHelper {
                 title: restaurant.name,
                 alt: restaurant.name,
                 url: DBHelper.urlForRestaurant(restaurant)
-            })
+            });
         marker.addTo(newMap);
         return marker;
     }
 }
 
+const dbPromise = idb.open('keyval-store', 1, upgradeDB => {
+    let keyValStore = upgradeDB.createObjectStore('keyval');
+    keyValStore.put("world", "hello");
+});
