@@ -1,14 +1,18 @@
-var gulp = require('gulp');
-var connect = require('gulp-connect');
+let gulp = require('gulp');
+let connect = require('gulp-connect');
+let sass = require('gulp-sass');
+let concatCss = require('gulp-concat-css');
 
 gulp.task('html', function(){
     return gulp.src('src/*.html')
         .pipe(gulp.dest('build/'))
 });
 
-gulp.task('css', function(){
-    return gulp.src('src/css/*.css')
-        .pipe(gulp.dest('build/css'))
+gulp.task('sass', function(){
+    return gulp.src(['node_modules/materialize-css/sass/**/*.scss', 'src/sass/*.scss'])
+        .pipe(sass().on('error', sass.logError))
+        .pipe(concatCss("styles.css"))
+        .pipe(gulp.dest('build/css/'))
 });
 
 gulp.task('js', function(){
@@ -36,7 +40,7 @@ gulp.task('sw', function(){
         .pipe(gulp.dest('build/'))
 });
 
-gulp.task('build', gulp.parallel('html', 'css', 'img', 'ico', 'js', 'pwa', 'sw'));
+gulp.task('build', gulp.parallel('html', 'sass', 'img', 'ico', 'js', 'pwa', 'sw'));
 
 gulp.task('connect', function () {
     connect.server({
