@@ -1,8 +1,9 @@
 const _CacheName = "v1";
 const _CachedURLs = [
     '/index.html',
+    '/restaurant.html',
+    '/pwa/manifest.json',
     '/css/',
-    '/data/',
     '/ico/',
     '/img/',
     '/js/'
