@@ -14,8 +14,7 @@
   "homepage": "https://github.com/aruke/MWS-Nanodegree-Projects#readme",
   "main": "src/index.html",
   "scripts": {
-    "start": "gulp connect",
-    "test": "test"
+    "start": "gulp"
   },
   "devDependencies": {
     "gulp": "4.0.0",

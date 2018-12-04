@@ -7,3 +7,7 @@ gulp.task('connect', function () {
         livereload: true
     })
 });
+
+gulp.task('default', gulp.parallel('connect'), function() {
+    console.log("Default task finished.")
+});
