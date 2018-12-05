@@ -19,7 +19,7 @@ let paths = {
         dest: 'build/css/'
     },
     js: {
-        src: 'src/js/*.js',
+        src: 'src/js/**/*.js',
         dest: 'build/js'
     }
 };
