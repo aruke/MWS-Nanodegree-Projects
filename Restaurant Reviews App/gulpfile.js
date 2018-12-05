@@ -1,6 +1,7 @@
 let gulp = require('gulp');
 let sass = require('gulp-sass');
 let concatCss = require('gulp-concat-css');
+let del = require('del');
 
 let browserSync = require('browser-sync').create();
 
@@ -77,6 +78,12 @@ gulp.task('sw', function () {
 
 gulp.task('build', gulp.parallel(tasks.html, tasks.scss, tasks.js, 'assets', 'sw'));
 
+gulp.task('clean:build', function() {
+    return del('build/**/*', {
+        force: true
+    });
+});
+
 gulp.task('browserSync', function () {
     browserSync.init({
         server: {
@@ -89,4 +96,4 @@ gulp.task('browserSync', function () {
     gulp.watch(paths.js.src, gulp.series(tasks.js));
 });
 
-gulp.task('default', gulp.series('build', 'browserSync'));
+gulp.task('default', gulp.series('clean:build', 'build', 'browserSync'));
