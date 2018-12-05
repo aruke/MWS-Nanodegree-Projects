@@ -1,1 +1,12 @@
 @charset "utf-8";
+@import "app";
+
+section.filter {
+  background: $primary-color;
+  select {
+    display: inline-block;
+  }
+  i {
+    color: white;
+  }
+}

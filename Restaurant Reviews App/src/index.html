@@ -10,6 +10,7 @@
 
     <!-- Main CSS File -->
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Mobile-Optimized Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,17 +38,23 @@
     </section>
 
     <!-- Filter Section -->
-    <section>
-        <div>
-            <img src="ico/filter-solid.svg" role="none" tabindex="-1"/>
-            <label aria-label="Select Neighborhood" for="neighborhoods-select"></label>
-            <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
-                <option value="all">All Neighborhoods</option>
-            </select>
-            <label aria-label="Select Cuisine" for="cuisines-select"></label>
-            <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
-                <option value="all">All Cuisines</option>
-            </select>
+    <section class="filter">
+        <div class="row">
+            <div class="col m2 l2 hide-on-small-and-down center" role="none" tabindex="-1">
+                <i class="medium material-icons">filter_list</i>
+            </div>
+            <div class="input-field col s6 m5 l5">
+                <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+                    <option value="all">All Neighborhoods</option>
+                </select>
+                <label aria-label="Select Neighborhood" for="neighborhoods-select"></label>
+            </div>
+            <div class="input-field col s6 m5 l5">
+                <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+                    <option value="all">All Cuisines</option>
+                </select>
+                <label aria-label="Select Cuisine" for="cuisines-select"></label>
+            </div>
         </div>
     </section>
 
