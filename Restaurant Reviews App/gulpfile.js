@@ -15,7 +15,7 @@ let paths = {
         dest: 'build/'
     },
     scss: {
-        src: ['node_modules/materialize-css/sass/**/*.scss', 'src/sass/*.scss'],
+        src: 'src/sass/*.scss',
         dest: 'build/css/'
     },
     js: {

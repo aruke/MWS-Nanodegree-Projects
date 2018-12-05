@@ -1,29 +1,29 @@
 @charset "utf-8";
-/* CSS Document */
 
-/*
-The Breakpoints will be:
-480px (m)
-780px (m)
-1280px (m)
-*/
-$primary-color: #006db3;
+$primary-color: #006DB3;
 $primary-color-light: lighten($primary-color, 15%);
 $primary-color-dark: darken($primary-color, 15%);
 
 $secondary-color: #BF360C;
 
-/* Main Container */
+footer {
+  @extend .page-footer;
+}
 
-/* Map Container */
-/* Map Div */
 
+/**
+    Map
+ */
 #map {
   height: 50vh;
   width: 100%;
 }
 
-/* Attribution */
+/**
+    Attribution Text Color
+ */
 .leaflet-container a {
   color: #003451;
 }
+
+@import "vendor/materialize";
