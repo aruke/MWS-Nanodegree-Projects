@@ -6,10 +6,17 @@ $primary-color-dark: darken($primary-color, 15%);
 
 $secondary-color: #BF360C;
 
-footer {
-  @extend .page-footer;
+nav {
+  div {
+    @extend .nav-wrapper;
+  }
+  a {
+    @extend .brand-logo;
+    @extend .center;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
 }
-
 
 /**
     Map
@@ -24,6 +31,16 @@ footer {
  */
 .leaflet-container a {
   color: #003451;
+}
+
+footer {
+  @extend .page-footer;
+  @extend .footer-copyright;
+  @extend .center;
+  a {
+    @extend .white-text;
+  }
+  padding-bottom: 20px;
 }
 
 @import "vendor/materialize";
