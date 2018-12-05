@@ -10,3 +10,33 @@ section.filter {
     color: white;
   }
 }
+
+#restaurants-grid {
+  @extend .container;
+  @extend .row;
+
+  .restaurant-item {
+    @extend .card;
+    @extend .col;
+    @extend .s12;
+    @extend .m6;
+    @extend .l4;
+
+    .image {
+      @extend .card-image;
+
+    }
+    .title {
+      @extend .card-title;
+    }
+    .content {
+      @extend .card-content;
+    }
+    .action {
+      @extend .card-action;
+      a {
+        color: $secondary-color;
+      }
+    }
+  }
+}

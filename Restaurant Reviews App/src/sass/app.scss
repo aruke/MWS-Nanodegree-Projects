@@ -5,6 +5,7 @@ $primary-color-light: lighten($primary-color, 15%);
 $primary-color-dark: darken($primary-color, 15%);
 
 $secondary-color: #BF360C;
+$card-link-color: $secondary-color;
 
 nav {
   div {
