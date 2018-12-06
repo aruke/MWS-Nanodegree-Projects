@@ -4,7 +4,7 @@ var newMap;
 /**
  * Initialize map as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {
+$(document).ready(function () {
     initMap();
 });
 
@@ -30,7 +30,7 @@ initMap = () => {
                 id: 'mapbox.streets'
             }).addTo(newMap);
             fillBreadcrumb();
-            DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
+            Helpers.map.mapMarkerForRestaurant(self.restaurant, self.newMap);
         }
     });
 };
@@ -48,15 +48,14 @@ fetchRestaurantFromURL = (callback) => {
         error = 'No restaurant id in URL';
         callback(error, null);
     } else {
-        DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-            self.restaurant = restaurant;
-            if (!restaurant) {
-                console.error(error);
-                return;
+        Helpers.db.restaurants.getById(id).then(restaurant => {
+            if (restaurant) {
+                fillRestaurantHTML();
+                self.restaurant = restaurant;
             }
-            fillRestaurantHTML();
-            callback(null, restaurant)
-        });
+        }).catch(error => {
+            console.error(error);
+        })
     }
 };
 
@@ -72,7 +71,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
     const image = document.getElementById('restaurant-img');
     image.className = 'restaurant-img';
-    image.src = DBHelper.imageUrlForRestaurant(restaurant);
+    image.src = Helpers.ui.imgSrc(restaurant);
+    image.srcSet = Helpers.ui.imgSrcSet(restaurant);
     image.alt = restaurant.name + ' Restaurant';
 
     const cuisine = document.getElementById('restaurant-cuisine');

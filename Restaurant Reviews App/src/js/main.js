@@ -7,24 +7,32 @@ var markers = [];
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {
+$(document).ready(function () {
     registerServiceWorker();
-    initMap(); // added
+    initMap();
     fetchNeighborhoods();
     fetchCuisines();
+
+    NetworkHelper.restaurants.getAll()
+        .then(function (restaurants) {
+            IDBHelper.restaurants.addAll(restaurants)
+        })
+        .catch(function (error) {
+            // TODO Show network error
+            console.log("NetworkHelper failed to load restaurants");
+            console.log(error);
+        });
 });
 
 /**
  * Fetch all neighborhoods and set their HTML.
  */
 fetchNeighborhoods = () => {
-    DBHelper.fetchNeighborhoods((error, neighborhoods) => {
-        if (error) { // Got an error
-            console.error(error);
-        } else {
-            self.neighborhoods = neighborhoods;
-            fillNeighborhoodsHTML();
-        }
+    Helpers.db.restaurants.getNeighborhoods().then(neighborhoods => {
+        self.neighborhoods = neighborhoods;
+        fillNeighborhoodsHTML();
+    }).catch(error => {
+        console.error(error);
     });
 };
 
@@ -45,13 +53,11 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
  * Fetch all cuisines and set their HTML.
  */
 fetchCuisines = () => {
-    DBHelper.fetchCuisines((error, cuisines) => {
-        if (error) { // Got an error!
-            console.error(error);
-        } else {
-            self.cuisines = cuisines;
-            fillCuisinesHTML();
-        }
+    Helpers.db.restaurants.getCuisines().then(cuisines => {
+        self.cuisines = cuisines;
+        fillCuisinesHTML();
+    }).catch(error => {
+        console.error(error);
     });
 };
 
@@ -103,14 +109,14 @@ updateRestaurants = () => {
     const cuisine = cSelect[cIndex].value;
     const neighborhood = nSelect[nIndex].value;
 
-    DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-        if (error) { // Got an error!
-            console.error(error);
-        } else {
+    Helpers.db.restaurants
+        .getFiltered({cuisine: cuisine, neighborhood: neighborhood})
+        .then(restaurants => {
             resetRestaurants(restaurants);
             fillRestaurantsHTML();
-        }
-    })
+        }).catch(error => {
+        console.error(error);
+    });
 };
 
 /**
@@ -151,11 +157,9 @@ createRestaurantHTML = (restaurant) => {
     const image = document.createElement('div');
     image.className = 'image';
     const img = document.createElement('img');
-    img.src = DBHelper.imageUrlForRestaurant(restaurant);
     img.alt = restaurant.name + ' Restaurant';
-    img.srcset = DBHelper.tinyImageUrlForRestaurant(restaurant) + ", "
-        + DBHelper.smallImageUrlForRestaurant(restaurant) + " 1.5x,"
-        + DBHelper.imageUrlForRestaurant(restaurant) + " 2x";
+    img.src = Helpers.ui.imgSrc(restaurant);
+    img.srcset = Helpers.ui.imgSrcSet(restaurant);
     image.append(img);
     element.append(image);
 
@@ -175,7 +179,7 @@ createRestaurantHTML = (restaurant) => {
     action.className = 'action';
     const more = document.createElement('a');
     more.innerHTML = 'View Details';
-    more.href = DBHelper.urlForRestaurant(restaurant);
+    more.href = restaurant.url;
     action.append(more);
     element.append(action);
 
@@ -188,7 +192,7 @@ createRestaurantHTML = (restaurant) => {
 addMarkersToMap = (restaurants = self.restaurants) => {
     restaurants.forEach(restaurant => {
         // Add marker to the map
-        const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.newMap);
+        const marker = Helpers.map.mapMarkerForRestaurant(restaurant, self.newMap);
         marker.on("click", onClick);
 
         function onClick() {
@@ -203,7 +207,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 /**
  * Registers service worker.
  */
-function registerServiceWorker() {
+registerServiceWorker = () => {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js', {scope: '/'})
             .then(function () {
@@ -214,5 +218,5 @@ function registerServiceWorker() {
     } else {
         console.log("ServiceWorker not available for current browser.");
     }
-}
+};
 
