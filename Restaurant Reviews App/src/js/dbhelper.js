@@ -37,20 +37,18 @@ let IDBHelper = {
         },
 
         getAll() {
-            return dbPromise.then(db => {
-                return new Promise(function (resolve, reject) {
-                    dbPromise.then(db => {
-                        const tx = db.transaction(STORES).objectStore(RESTAURANT_STORE_NAME).getAll();
-                        return tx.then(function (restaurants) {
-                            // Add URls
-                            restaurants.map(r => r.url = `./restaurant.html?id=${r.id}`);
-                            resolve(restaurants);
+            return new Promise(function (resolve, reject) {
+                dbPromise.then(db => {
+                    const tx = db.transaction(STORES).objectStore(RESTAURANT_STORE_NAME).getAll();
+                    return tx.then(function (restaurants) {
+                        // Add URls
+                        restaurants.map(r => r.url = `./restaurant.html?id=${r.id}`);
+                        resolve(restaurants);
 
-                        }).catch(function (error) {
-                            reject(error);
-                        });
-                    })
-                });
+                    }).catch(function (error) {
+                        reject(error);
+                    });
+                })
             });
         },
 
@@ -104,8 +102,23 @@ let IDBHelper = {
         },
 
         getById(id) {
-            return dbPromise.then(db => {
-                return db.transaction(STORES).objectStore(RESTAURANT_STORE_NAME).get(id);
+            return new Promise(function (resolve, reject) {
+                IDBHelper.restaurants.getAll().then(function (restaurants) {
+                    let restaurant;
+                    for (let r in restaurants) {
+                        if (r == id) {
+                            restaurant = r;
+                            break;
+                        }
+                    }
+                    if (restaurant)
+                        resolve(restaurants[restaurant]);
+                    else
+                        reject("Not Found");
+
+                }).catch(function (error) {
+                    reject(error);
+                });
             });
         }
     },

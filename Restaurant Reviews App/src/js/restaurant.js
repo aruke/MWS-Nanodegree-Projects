@@ -50,11 +50,11 @@ fetchRestaurantFromURL = (callback) => {
     } else {
         Helpers.db.restaurants.getById(id).then(restaurant => {
             if (restaurant) {
-                fillRestaurantHTML();
                 self.restaurant = restaurant;
+                fillRestaurantHTML();
             }
         }).catch(error => {
-            console.error(error);
+            console.log(error);
         })
     }
 };
