@@ -210,6 +210,42 @@ let UIHelper = {
 
     imgSrcSet(restaurant) {
         return `/img/50/${restaurant.photograph}.jpg, /img/80/${restaurant.photograph}.jpg 1.5x, /img/${restaurant.photograph}.jpg  2x`;
+    },
+
+    restaurantElement: function (restaurant) {
+        const element = document.createElement('div');
+        element.classList.add("restaurant-item");
+
+        const image = document.createElement('div');
+        image.className = 'image';
+        const img = document.createElement('img');
+        img.alt = restaurant.name + ' Restaurant';
+        img.src = Helpers.ui.imgSrc(restaurant);
+        img.srcset = Helpers.ui.imgSrcSet(restaurant);
+        image.append(img);
+        element.append(image);
+
+        const name = document.createElement('span');
+        name.className = 'title';
+        name.innerHTML = restaurant.name;
+        element.append(name);
+
+        const contents = document.createElement('div');
+        contents.className = 'content';
+        const information = document.createElement('p');
+        information.innerHTML = restaurant.neighborhood + '</br>' + restaurant.address;
+        contents.append(information);
+        element.append(contents);
+
+        const action = document.createElement('div');
+        action.className = 'action';
+        const more = document.createElement('a');
+        more.innerHTML = 'View Details';
+        more.href = restaurant.url;
+        action.append(more);
+        element.append(action);
+
+        return element
     }
 };
 
@@ -222,8 +258,23 @@ let MapHelper = {
                 alt: restaurant.name,
                 url: restaurant.url
             });
-        marker.addTo(newMap);
+        marker.addTo(map);
         return marker;
+    }
+};
+
+let ServiceWorker = {
+    register() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js', {scope: '/'})
+                .then(function () {
+                    console.log("ServiceWorker registered.");
+                }).catch(function () {
+                console.log("Service worker registration failed.");
+            });
+        } else {
+            console.log("ServiceWorker not available for current browser.");
+        }
     }
 };
 
@@ -231,7 +282,9 @@ let Helpers = {
     db: IDBHelper,
     network: NetworkHelper,
     ui: UIHelper,
-    map: MapHelper
+    map: MapHelper,
+    sw: ServiceWorker
 };
 
 Helpers.db.init();
+Helpers.sw.register();
