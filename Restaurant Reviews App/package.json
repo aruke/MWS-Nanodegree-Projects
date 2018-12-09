@@ -17,13 +17,21 @@
     "start": "gulp"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
     "browser-sync": "^2.26.3",
     "del": "^3.0.0",
     "gulp": "4.0.0",
+    "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.0.0",
     "gulp-concat-css": "^3.1.0",
+    "gulp-if": "^2.0.2",
+    "gulp-purifycss": "^0.2.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
-    "node-sass": "^4.10.0"
+    "gulp-uglify": "^3.0.1",
+    "gulp-useref": "^3.1.6",
+    "node-sass": "^4.10.0",
+    "purify-css": "^1.2.5"
   }
 }
