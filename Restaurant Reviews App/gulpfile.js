@@ -88,11 +88,10 @@ gulp.task('assets', function () {
 
 gulp.task('service-worker', () => {
     return workboxBuild.generateSW({
-        importScripts: ['js/_precache.js'],
         swDest: 'build/sw.js',
         globDirectory: 'build',
         globPatterns: [
-            '**/*.html'
+            '**/*.{html,css,js,png,svg,jpeg,json}',
         ],
         ignoreUrlParametersMatching: [/^id/],
         clientsClaim: true,
