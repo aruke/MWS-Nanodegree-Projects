@@ -103,7 +103,14 @@ $(document).ready(function () {
             mainUI.showRestaurants(restaurants);
         })
         .catch(function (error) {
-            mainUI.showNoDataView();
+            // IF network fails, show data from local
+
+            Helpers.db.restaurants.getAll().then(restaurants => {
+                mainUI.showRestaurants(restaurants);
+            }).then(error => {
+                mainUI.showNoDataView();
+            });
+
             console.log("NetworkHelper failed to load restaurants");
             console.log(error);
             M.toast({html: 'No Network! ＼(￣O￣)', classes: 'rounded'});

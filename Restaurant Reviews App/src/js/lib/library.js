@@ -20,7 +20,7 @@ let IDBHelper = {
         if (!dbPromise)
             dbPromise = idb.open(DB_NAME, DB_VERSION, upgradeDB => {
                 let restaurantStore = upgradeDB.createObjectStore(RESTAURANT_STORE_NAME, {keyPath: 'id'});
-                let reviewStore = upgradeDB.createObjectStore(REVIEW_STORE_NAME);
+                let reviewStore = upgradeDB.createObjectStore(REVIEW_STORE_NAME, {keyPath: 'id'});
             });
     },
 
@@ -124,11 +124,30 @@ let IDBHelper = {
     },
 
     reviews: {
-        getForRestaurant(restaurantId) {
+
+        addAll(reviews) {
             return dbPromise.then(db => {
                 const tx = db.transaction(STORES, 'readwrite');
-
+                reviews.forEach(review => {
+                    tx.objectStore(REVIEW_STORE_NAME).put(review);
+                });
                 return tx.complete;
+            });
+        },
+
+        getForRestaurant(restaurantId) {
+            return new Promise(function (resolve, reject) {
+                dbPromise.then(db => {
+                    const tx = db.transaction(STORES).objectStore(REVIEW_STORE_NAME).getAll();
+                    return tx.then(function (reviews) {
+                        // Filter
+                        let filteredReviews = reviews.filter(r => r.restaurant_id == restaurantId);
+                        resolve(filteredReviews);
+
+                    }).catch(function (error) {
+                        reject(error);
+                    });
+                })
             });
         }
     }
