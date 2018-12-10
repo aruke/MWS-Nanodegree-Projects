@@ -285,11 +285,13 @@ let MapHelper = {
 let ServiceWorker = {
     register() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js', {scope: '/'})
-                .then(function () {
-                    console.log("ServiceWorker registered.");
-                }).catch(function () {
-                console.log("Service worker registration failed.");
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js', {scope: '/'})
+                    .then(function () {
+                        console.log("ServiceWorker registered.");
+                    }).catch(function () {
+                    console.log("Service worker registration failed.");
+                });
             });
         } else {
             console.log("ServiceWorker not available for current browser.");

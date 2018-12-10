@@ -8,6 +8,7 @@ let uglify = require('gulp-uglify');
 let minifyCss = require('gulp-clean-css');
 let babel = require('gulp-babel');
 var purify = require('gulp-purifycss');
+const workboxBuild = require('workbox-build');
 
 let browserSync = require('browser-sync').create();
 
@@ -85,12 +86,69 @@ gulp.task('assets', function () {
         .pipe(gulp.dest('build/'))
 });
 
-gulp.task('sw', function () {
-    return gulp.src('src/service-worker.js')
-        .pipe(gulp.dest('build/'))
+gulp.task('service-worker', () => {
+    return workboxBuild.generateSW({
+        importScripts: ['js/_precache.js'],
+        swDest: 'build/sw.js',
+        globDirectory: 'build',
+        globPatterns: [
+            '**/*.html'
+        ],
+        ignoreUrlParametersMatching: [/^id/],
+        clientsClaim: true,
+        skipWaiting: true,
+        runtimeCaching: [
+            {
+                /* Google Fonts */
+                urlPattern: new RegExp('^https:\\/\\/fonts\\.googleapis\\.com'),
+                handler: 'staleWhileRevalidate',
+                options: {
+                    cacheName: 'gfonts'
+                }
+            },
+            {
+                /* HTML files */
+                urlPattern: new RegExp('\\.(?:html)$'),
+                handler: 'staleWhileRevalidate'
+            },
+            {
+                /* CSS, JS, JSON files */
+                urlPattern: new RegExp('\\.(?:js|css|json)$'),
+                handler: 'staleWhileRevalidate',
+                options: {
+                    cacheName: 'static-resources',
+                    expiration: {
+                        maxAgeSeconds: 7 * 24 * 60 * 60,
+                    }
+                }
+            },
+            {
+                /* External resources */
+                urlPattern: new RegExp('.*(?:ajax.googleapis|googleapis|unpkg|cdnjs.cloudflare)\\.com'),
+                handler: 'staleWhileRevalidate',
+                options: {
+                    cacheName: 'static-resources',
+                    expiration: {
+                        maxAgeSeconds: 7 * 24 * 60 * 60,
+                    }
+                }
+            },
+            {
+                /* Icons & Images */
+                urlPattern: new RegExp('.*\\.(?:png|svg|gif|jpg|jpeg)$'),
+                handler: 'staleWhileRevalidate',
+                options: {
+                    cacheName: 'image-cache',
+                    expiration: {
+                        maxAgeSeconds: 7 * 24 * 60 * 60,
+                    }
+                }
+            }
+        ]
+    });
 });
 
-gulp.task('build', gulp.parallel(tasks.html, tasks.scss, tasks.js, 'assets', 'sw'));
+gulp.task('build', gulp.parallel(tasks.html, tasks.scss, tasks.js, 'assets', 'service-worker'));
 
 gulp.task('clean', function () {
     return del('build/**/*', {
