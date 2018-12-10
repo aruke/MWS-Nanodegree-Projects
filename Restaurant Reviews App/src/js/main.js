@@ -99,8 +99,14 @@ $(document).ready(function () {
 
     Helpers.network.restaurants.getAll()
         .then(function (restaurants) {
-            IDBHelper.restaurants.addAll(restaurants);
+            Helpers.db.restaurants.addAll(restaurants);
             mainUI.showRestaurants(restaurants);
+            // Fill reviews if possible
+            restaurants.forEach(restaurant => {
+                Helpers.network.reviews.getForRestaurant(restaurant.id).then(reviews => {
+                    Helpers.db.reviews.addAll(reviews);
+                });
+            });
         })
         .catch(function (error) {
             // IF network fails, show data from local
