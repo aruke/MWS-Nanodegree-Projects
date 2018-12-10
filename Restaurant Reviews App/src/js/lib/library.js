@@ -106,7 +106,7 @@ let IDBHelper = {
                 IDBHelper.restaurants.getAll().then(function (restaurants) {
                     let restaurant;
                     for (let r in restaurants) {
-                        if (r == id) {
+                        if (restaurants[r].id == id) {
                             restaurant = r;
                             break;
                         }
