@@ -32,6 +32,7 @@
     "gulp-uglify": "^3.0.1",
     "gulp-useref": "^3.1.6",
     "node-sass": "^4.10.0",
-    "purify-css": "^1.2.5"
+    "purify-css": "^1.2.5",
+    "workbox-build": "^3.6.3"
   }
 }
