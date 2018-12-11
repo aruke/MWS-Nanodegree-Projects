@@ -31,6 +31,18 @@ $(document).ready(function () {
 
             // Fill breadcrumb navigation
             $('#breadcrumb').append($('<li>', {text: restaurant.name}));
+
+            $(window).keydown(function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            $('#review-form').submit((event) => {
+                event.preventDefault();
+                detailUI.submitReview(event);
+            });
         },
 
         initMap: (restaurant) => {
@@ -91,9 +103,6 @@ $(document).ready(function () {
 
         fillReviewsHTML: (reviews) => {
             const container = document.getElementById('reviews-container');
-            const title = document.createElement('h3');
-            title.innerHTML = 'Reviews';
-            container.appendChild(title);
 
             if (!reviews) {
                 const noReviews = document.createElement('p');
@@ -102,6 +111,9 @@ $(document).ready(function () {
                 return;
             }
             const ul = document.getElementById('reviews-list');
+            while (ul.firstChild) {
+                ul.removeChild(ul.firstChild);
+            }
             reviews.forEach(review => {
                 ul.appendChild(detailUI.createReviewHTML(review));
             });
@@ -130,6 +142,40 @@ $(document).ready(function () {
             li.appendChild(comments);
 
             return li;
+        },
+
+        submitReview(submitEvent) {
+            var name, review, ratings;
+            if ($('#name').val() == "") {
+                M.toast({html: 'Please enter your name.', classes: 'rounded'});
+                return;
+            } else {
+                name = $('#name').val();
+            }
+            if ($('#review').val() == "") {
+                M.toast({html: 'Please enter review.', classes: 'rounded'});
+                return;
+            } else {
+                review = $('#review').val();
+            }
+            ratings = parseInt($("input[name='ratings']:checked").val());
+
+            Helpers.network.reviews.addForRestaurant(parseInt(id), name, review, ratings).then(review => {
+                console.log(review);
+                Helpers.db.reviews.getForRestaurant(id).then(reviews => {
+                    // Reset the form
+                    $('#name').val("");
+                    $('#review').val("");
+                    var lastRadio;
+                    $("input[name='ratings']").each(function (index, element) {
+                        element.checked = false;
+                        lastRadio = element;
+                    });
+                    lastRadio.checked = true;
+
+                    detailUI.fillReviewsHTML(reviews);
+                })
+            });
         }
     };
 

@@ -217,6 +217,29 @@ let NetworkHelper = {
                     }
                 });
             });
+        },
+
+        addForRestaurant(id, name, comments, ratings) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: "POST",
+                    url: DB_SERVER_BASE_URL + '/reviews/',
+                    data: {
+                        "restaurant_id": id,
+                        "name": name,
+                        "rating": ratings,
+                        "comments": comments
+                    },
+                    success(review) {
+                        Helpers.db.reviews.addAll([review]);
+                        resolve(review)
+                    },
+                    error(xhr, status, error) {
+                        console.log('XHR post reviews() failed with error :' + error);
+                        reject(error)
+                    }
+                });
+            });
         }
     }
 };
