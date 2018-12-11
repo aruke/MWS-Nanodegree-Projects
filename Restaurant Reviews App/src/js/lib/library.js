@@ -232,6 +232,9 @@ let UIHelper = {
     },
 
     restaurantElement: function (restaurant) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add("restaurant-item-wrapper");
+
         const element = document.createElement('div');
         element.classList.add("restaurant-item");
 
@@ -264,7 +267,8 @@ let UIHelper = {
         action.append(more);
         element.append(action);
 
-        return element
+        wrapper.append(element);
+        return wrapper
     }
 };
 

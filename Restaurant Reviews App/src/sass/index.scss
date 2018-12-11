@@ -15,27 +15,33 @@ section.filter {
   @extend .container;
   @extend .row;
 
-  .restaurant-item {
-    @extend .card;
+  .restaurant-item-wrapper {
     @extend .col;
     @extend .s12;
     @extend .m6;
     @extend .l4;
 
-    .image {
-      @extend .card-image;
+    .restaurant-item {
+      @extend .card;
+      padding: 0 0 10px 0;
 
-    }
-    .title {
-      @extend .card-title;
-    }
-    .content {
-      @extend .card-content;
-    }
-    .action {
-      @extend .card-action;
-      a {
-        color: $secondary-color;
+      .image {
+        @extend .card-image;
+      }
+      .title {
+        @extend .card-title;
+        padding: 12px $card-padding 0;
+        display: inline-block;
+      }
+      .content {
+        @extend .card-content;
+      }
+      .action {
+        @extend .card-action;
+        @extend .center;
+        a {
+          color: $secondary-color;
+        }
       }
     }
   }
