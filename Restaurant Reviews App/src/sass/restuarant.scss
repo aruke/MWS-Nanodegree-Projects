@@ -1,1 +1,99 @@
 @charset "utf-8";
+@import "app";
+
+%header-style {
+  color: $secondary-color;
+  font-weight: 300;
+  letter-spacing: -1px;
+  @extend .center;
+}
+
+#breadcrumb {
+  @extend .container;
+  padding: 20px $card-padding;
+  list-style: none;
+  background-color: $primary-color;
+  font-size: 17px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  color: white;
+  li {
+    display: inline;
+    a {
+      color: white;
+      text-decoration: none;
+      &:hover {
+        color: whitesmoke;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+#breadcrumb li + li:before {
+  padding: 8px;
+  content: "/\00a0";
+}
+
+#restaurant-container {
+  @extend .container;
+  h2 {
+    @extend %header-style;
+  }
+}
+
+.restaurant-img {
+  @extend .responsive-img;
+}
+
+#restaurant-hours {
+  td {
+    padding: 8px 4px;
+  }
+}
+
+#restaurant-cuisine {
+  background-color: #333;
+  color: #ddd;
+  font-size: 12pt;
+  font-weight: 300;
+  letter-spacing: 10px;
+  margin: 0 0 20px;
+  padding: 5px 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+#reviews-container {
+  @extend .container;
+  h3 {
+    @extend %header-style;
+  }
+}
+
+#reviews-list li {
+  background-color: #fff;
+  border: 2px solid #f3f3f3;
+  display: block;
+  list-style-type: none;
+  margin: 0 0 30px;
+  overflow: hidden;
+  padding: $card-padding;
+}
+
+#reviews-section {
+  @extend .container;
+  h4 {
+    @extend %header-style;
+  }
+}
+
+#review-form {
+  background-color: #fff;
+  border: 2px solid #f3f3f3;
+  display: block;
+  padding: $card-padding * 2;
+  margin-bottom: $card-padding;
+}

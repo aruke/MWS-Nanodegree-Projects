@@ -156,4 +156,6 @@ $(document).ready(function () {
             // Show error
         });
     });
+
+    M.AutoInit();
 });

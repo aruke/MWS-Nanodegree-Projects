@@ -58,6 +58,61 @@
     <section id="reviews-container">
         <ul id="reviews-list"></ul>
     </section>
+
+    <section id="reviews-section">
+        <h4>Add Review</h4>
+        <form id="review-form" action="">
+            <div class="input-field row">
+                <input id="name" value="" type="text" class="validate">
+                <label for="name">Your Name</label>
+            </div>
+
+            <div class="input-field row">
+                <input id="review" value="" type="text" class="validate">
+                <label for="review">Your Review</label>
+            </div>
+            <p class="center">Ratings</p>
+            <div class="row">
+                <p class="col s2 offset-s1">
+                    <label>
+                        <input name="ratings" type="radio" value="1"/>
+                        <span>1</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="2"/>
+                        <span>2</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="3"/>
+                        <span>3</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="4"/>
+                        <span>4</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="5" checked/>
+                        <span>5</span>
+                    </label>
+                </p>
+            </div>
+
+            <div class="center row">
+                <button class="btn waves-effect waves-light" type="submit">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </section>
+
 </main>
 
 <!-- Third-Party Libraries : CDN -->
