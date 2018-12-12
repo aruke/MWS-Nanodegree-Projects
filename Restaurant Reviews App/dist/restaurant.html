@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"/>
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" type="text/css" href="css/styles.min.css">
+
+    <!-- Mobile-Optimized Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Manifest File -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#006db3">
+
+
+    <title>Restaurant Info</title>
+</head>
+
+<body class="details">
+
+<header>
+    <nav>
+        <a href="/">Restaurant Reviews</a>
+    </nav>
+</header>
+
+<main>
+    <!-- Map Section -->
+    <section id="map-container" role="application" aria-label="This is a map for the restaurant you are viewing.">
+        <div id="map"></div>
+    </section>
+
+    <!-- Navigation/Breadcrumb -->
+    <ul id="breadcrumb" role="menu" aria-label="Navigation for restaurant menu.">
+        <li><a href="/">Home</a></li>
+    </ul>
+
+    <!-- Restaurant Info Section -->
+    <section id="restaurant-container">
+
+        <h2 id="restaurant-name"></h2>
+
+        <div>
+            <img id="restaurant-img" src="">
+            <p id="restaurant-cuisine"></p>
+        </div>
+
+        <p id="restaurant-address"></p>
+
+        <table id="restaurant-hours" tabindex="0"></table>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews-container">
+        <h3>Reviews</h3>
+        <ul id="reviews-list"></ul>
+    </section>
+
+    <section id="reviews-section">
+        <h4>Add Review</h4>
+        <form id="review-form" action="">
+            <div class="input-field row">
+                <input id="name" value="" type="text" class="validate">
+                <label for="name">Your Name</label>
+            </div>
+
+            <div class="input-field row">
+                <input id="review" value="" type="text" class="validate">
+                <label for="review">Your Review</label>
+            </div>
+            <p class="center">Ratings</p>
+            <div class="row">
+                <p class="col s2 offset-s1">
+                    <label>
+                        <input name="ratings" type="radio" value="1"/>
+                        <span>1</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="2"/>
+                        <span>2</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="3"/>
+                        <span>3</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="4"/>
+                        <span>4</span>
+                    </label>
+                </p>
+                <p class="col s2">
+                    <label>
+                        <input name="ratings" type="radio" value="5" checked/>
+                        <span>5</span>
+                    </label>
+                </p>
+            </div>
+
+            <div class="center row">
+                <button class="btn waves-effect waves-light" type="submit">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </section>
+
+</main>
+
+<!-- Third-Party Libraries : CDN -->
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<!-- App Specific Scripts -->
+<script src="js/scripts.min.js" charset="utf-8"></script>
+
+<!-- Page Specific Script -->
+<script charset="utf-8" src="js/restaurant.js"></script>
+
+<footer>
+    Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+</footer>
+
+</body>
+
+</html>
