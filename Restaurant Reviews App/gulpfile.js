@@ -1,13 +1,13 @@
-let gulp = require('gulp');
-let sass = require('gulp-sass');
-let concatCss = require('gulp-concat-css');
-let del = require('del');
-let useref = require('gulp-useref');
-let gulpif = require('gulp-if');
-let uglify = require('gulp-uglify');
-let minifyCss = require('gulp-clean-css');
-let babel = require('gulp-babel');
-var purify = require('gulp-purifycss');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const concatCss = require('gulp-concat-css');
+const del = require('del');
+const useref = require('gulp-useref');
+const gulpif = require('gulp-if');
+const uglify = require('gulp-uglify');
+const minifyCss = require('gulp-clean-css');
+const babel = require('gulp-babel');
+const purify = require('gulp-purifycss');
 const workboxBuild = require('workbox-build');
 
 let browserSync = require('browser-sync').create();
@@ -51,7 +51,7 @@ gulp.task(tasks.html, function () {
         .pipe(gulpif('*.js', uglify()))
         .on('error', (error) => console.error(error))
         .pipe(gulp.dest(paths.html.dest))
-
+        .pipe(browserSync.stream())
 });
 
 /**
@@ -65,7 +65,6 @@ gulp.task(tasks.scss, function () {
         .pipe(concatCss("styles.min.css"))
         .pipe(gulp.dest(paths.scss.dest))
         .pipe(browserSync.stream())
-
 });
 
 /**
@@ -76,10 +75,8 @@ gulp.task(tasks.js, function () {
         .pipe(babel({presets: ['@babel/env']}))
         .pipe(uglify())
         .pipe(gulp.dest(paths.js.dest))
-        .pipe(browserSync.reload({stream: true}))
+        .pipe(browserSync.stream())
 });
-
-gulp.watch(paths.js.src, gulp.series(tasks.js));
 
 gulp.task('assets', function () {
     return gulp.src('src/assets/**/*')
