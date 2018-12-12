@@ -27,6 +27,19 @@ section.filter {
 
       .image {
         @extend .card-image;
+        .fab {
+          @extend .btn-floating;
+          @extend .btn-large;
+          @extend .halfway-fab;
+          @extend .waves-effect;
+          @extend .waves-light;
+          @extend .red;
+          position: absolute;
+          padding: 0;
+          i {
+            line-height: inherit;
+          }
+        }
       }
       .title {
         @extend .card-title;

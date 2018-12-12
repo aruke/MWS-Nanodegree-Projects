@@ -200,6 +200,23 @@ let NetworkHelper = {
                     }
                 });
             });
+        },
+
+        toggleFavourite(id, isFav) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: "PUT",
+                    url: DB_SERVER_BASE_URL + '/restaurants/' + id + '/?is_favorite=' + isFav,
+                    success(updated) {
+                        Helpers.db.restaurants.addAll([updated]);
+                        resolve(updated)
+                    },
+                    error(xhr, status, error) {
+                        console.log('XHR post toggleFavourite failed with error :' + error);
+                        reject(error)
+                    }
+                });
+            });
         }
     },
 
@@ -268,7 +285,33 @@ let UIHelper = {
         img.src = Helpers.ui.imgSrc(restaurant);
         img.srcset = Helpers.ui.imgSrcSet(restaurant);
         image.append(img);
+
+        const button = document.createElement('a');
+        button.className = 'fab';
+        const icon = document.createElement('i');
+        icon.className = 'material-icons';
+        if (restaurant.is_favorite) {
+            icon.innerHTML = 'favorite';
+        } else {
+            icon.innerHTML = 'favorite_border';
+        }
+        button.append(icon);
+        image.append(button);
         element.append(image);
+
+        button.onclick = (button) => {
+            Helpers.network.restaurants.toggleFavourite(restaurant.id, !restaurant.is_favorite)
+                .then(data => {
+                    restaurant.is_favorite = !restaurant.is_favorite;
+                    if (restaurant.is_favorite && restaurant.is_favorite == true) {
+                        icon.innerHTML = 'favorite';
+                    } else {
+                        icon.innerHTML = 'favorite_border';
+                    }
+                }).catch(error => {
+                    M.toast({html: 'Error! ＼(￣O￣)', classes: 'rounded'});
+                });
+        };
 
         const name = document.createElement('span');
         name.className = 'title';
