@@ -20,9 +20,9 @@ let IDBHelper = {
         // Initialize if not already defined
         if (!dbPromise)
             dbPromise = idb.open(DB_NAME, DB_VERSION, upgradeDB => {
-                let restaurantStore = upgradeDB.createObjectStore(RESTAURANT_STORE_NAME, {keyPath: 'id'});
-                let reviewStore = upgradeDB.createObjectStore(REVIEW_STORE_NAME, {keyPath: 'id'});
-                let pendingReviewStore = upgradeDB.createObjectStore(PENDING_REVIEW_STORE_NAME, {autoIncrement: true});
+                upgradeDB.createObjectStore(RESTAURANT_STORE_NAME, {keyPath: 'id'});
+                upgradeDB.createObjectStore(REVIEW_STORE_NAME, {keyPath: 'id'});
+                upgradeDB.createObjectStore(PENDING_REVIEW_STORE_NAME, {autoIncrement: true});
             });
     },
 
@@ -350,8 +350,8 @@ let UIHelper = {
                         icon.innerHTML = 'favorite_border';
                     }
                 }).catch(error => {
-                    M.toast({html: 'Error! ＼(￣O￣)', classes: 'rounded'});
-                });
+                M.toast({html: 'Error! ＼(￣O￣)', classes: 'rounded'});
+            });
         };
 
         const name = document.createElement('span');
@@ -396,7 +396,7 @@ let MapHelper = {
 let ServiceWorker = {
     register() {
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
                 navigator.serviceWorker.register('sw.js', {scope: '/'})
                     .then(function () {
                         console.log("ServiceWorker registered.");
