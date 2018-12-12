@@ -438,10 +438,12 @@ let Sync = {
                     });
                 });
 
-                M.toast({
-                    html: 'Pending Reviews sent. Please refresh page to load them.',
-                    classes: 'rounded'
-                });
+                if (keys.length !== 0) {
+                    M.toast({
+                        html: 'Pending Reviews sent. Please refresh page to load them.',
+                        classes: 'rounded'
+                    });
+                }
             });
         }
     }
