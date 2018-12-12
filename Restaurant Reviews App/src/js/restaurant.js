@@ -160,9 +160,36 @@ $(document).ready(function () {
             }
             ratings = parseInt($("input[name='ratings']:checked").val());
 
-            Helpers.network.reviews.addForRestaurant(parseInt(id), name, review, ratings).then(review => {
-                console.log(review);
-                Helpers.db.reviews.getForRestaurant(id).then(reviews => {
+            // Check for network
+            let networkAvailable = navigator.onLine;
+            if (networkAvailable && networkAvailable === true) {
+                // Call server and add review to database
+                Helpers.network.reviews.addForRestaurant(parseInt(id), name, review, ratings).then(review => {
+                    console.log(review);
+                    Helpers.db.reviews.getForRestaurant(id).then(reviews => {
+                        // Reset the form
+                        $('#name').val("");
+                        $('#review').val("");
+                        var lastRadio;
+                        $("input[name='ratings']").each(function (index, element) {
+                            element.checked = false;
+                            lastRadio = element;
+                        });
+                        lastRadio.checked = true;
+
+                        detailUI.fillReviewsHTML(reviews);
+                    })
+                });
+            } else {
+                // Add to pending reviews
+                let pendingReview = {
+                    "restaurant_id": parseInt(id),
+                    "name": name,
+                    "rating": review,
+                    "comments": ratings
+                };
+                Helpers.db.pendingReview.add(pendingReview).then(data => {
+                    M.toast({html: 'No Network! Your review will be added when network is available.', classes: 'rounded'});
                     // Reset the form
                     $('#name').val("");
                     $('#review').val("");
@@ -172,10 +199,12 @@ $(document).ready(function () {
                         lastRadio = element;
                     });
                     lastRadio.checked = true;
+                }).catch(error => {
+                    M.toast({html: 'Error! ＼(￣O￣)', classes: 'rounded'});
+                });
+            }
 
-                    detailUI.fillReviewsHTML(reviews);
-                })
-            });
+
         }
     };
 

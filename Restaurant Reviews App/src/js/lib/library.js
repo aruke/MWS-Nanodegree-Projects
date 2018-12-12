@@ -10,8 +10,9 @@ let DB_VERSION = 1;
 
 let RESTAURANT_STORE_NAME = 'restaurants';
 let REVIEW_STORE_NAME = 'reviews';
+let PENDING_REVIEW_STORE_NAME = 'pending_reviews';
 
-let STORES = [RESTAURANT_STORE_NAME, REVIEW_STORE_NAME];
+let STORES = [RESTAURANT_STORE_NAME, REVIEW_STORE_NAME, PENDING_REVIEW_STORE_NAME];
 
 let IDBHelper = {
 
@@ -21,6 +22,7 @@ let IDBHelper = {
             dbPromise = idb.open(DB_NAME, DB_VERSION, upgradeDB => {
                 let restaurantStore = upgradeDB.createObjectStore(RESTAURANT_STORE_NAME, {keyPath: 'id'});
                 let reviewStore = upgradeDB.createObjectStore(REVIEW_STORE_NAME, {keyPath: 'id'});
+                let pendingReviewStore = upgradeDB.createObjectStore(PENDING_REVIEW_STORE_NAME, {autoIncrement: true});
             });
     },
 
@@ -148,6 +150,45 @@ let IDBHelper = {
                         reject(error);
                     });
                 })
+            });
+        }
+    },
+
+    pendingReview: {
+        add(review) {
+            return dbPromise.then(db => {
+                const tx = db.transaction(STORES, 'readwrite');
+                tx.objectStore(PENDING_REVIEW_STORE_NAME).put(review);
+                return tx.complete;
+            });
+        },
+
+        get(key) {
+            return dbPromise.then(db => {
+                return db.transaction(STORES).objectStore(PENDING_REVIEW_STORE_NAME).get(key);
+            });
+        },
+
+        keys() {
+            return dbPromise.then(db => {
+                const tx = db.transaction(STORES);
+                const keys = [];
+                const store = tx.objectStore(PENDING_REVIEW_STORE_NAME);
+                (store.iterateKeyCursor || store.iterateCursor).call(store, cursor => {
+                    if (!cursor) return;
+                    keys.push(cursor.key);
+                    cursor.continue();
+                });
+
+                return tx.complete.then(() => keys);
+            });
+        },
+
+        delete(id) {
+            return dbPromise.then(db => {
+                const tx = db.transaction(STORES, 'readwrite');
+                tx.objectStore(PENDING_REVIEW_STORE_NAME).delete(id);
+                return tx.complete;
             });
         }
     }
@@ -369,13 +410,52 @@ let ServiceWorker = {
     }
 };
 
+let Sync = {
+    beginWatch() {
+        window.addEventListener('load', function () {
+            // Update reviews if any, when window is first loaded
+            Sync.updateOnlineStatus(null);
+            // Set watcher for network
+            window.addEventListener('online', Sync.updateOnlineStatus);
+        });
+    },
+    updateOnlineStatus(event) {
+        // Recheck for network
+        if (navigator.onLine) {
+            IDBHelper.pendingReview.keys().then(keys => {
+                keys.forEach(key => {
+                    IDBHelper.pendingReview.get(key).then(pendingReview => {
+                        console.log(pendingReview);
+                        console.log(key);
+                        NetworkHelper.reviews.addForRestaurant(
+                            pendingReview.restaurant_id,
+                            pendingReview.name,
+                            pendingReview.rating,
+                            pendingReview.comments
+                        ).then(review => {
+                            IDBHelper.pendingReview.delete(key);
+                        });
+                    });
+                });
+
+                M.toast({
+                    html: 'Pending Reviews sent. Please refresh page to load them.',
+                    classes: 'rounded'
+                });
+            });
+        }
+    }
+};
+
 let Helpers = {
     db: IDBHelper,
     network: NetworkHelper,
     ui: UIHelper,
     map: MapHelper,
-    sw: ServiceWorker
+    sw: ServiceWorker,
+    sync: Sync
 };
 
 Helpers.db.init();
 Helpers.sw.register();
+Helpers.sync.beginWatch();
