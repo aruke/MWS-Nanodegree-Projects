@@ -13,8 +13,9 @@
 
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
-workbox.skipWaiting();
-workbox.clientsClaim();
+importScripts(
+  "__precacheManifest.js"
+);
 
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
