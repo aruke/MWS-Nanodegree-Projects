@@ -85,6 +85,7 @@ gulp.task('assets', function () {
 
 gulp.task('service-worker', () => {
     return workboxBuild.generateSW({
+        importScripts: ['__precacheManifest.js'],
         swDest: 'build/sw.js',
         globDirectory: 'build',
         globPatterns: [
