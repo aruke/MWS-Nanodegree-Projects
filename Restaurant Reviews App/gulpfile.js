@@ -1,14 +1,14 @@
-const gulp = require('gulp');
-const sass = require('gulp-sass');
-const concatCss = require('gulp-concat-css');
-const del = require('del');
-const useref = require('gulp-useref');
-const gulpif = require('gulp-if');
-const uglify = require('gulp-uglify');
-const minifyCss = require('gulp-clean-css');
-const babel = require('gulp-babel');
-const purify = require('gulp-purifycss');
-const workboxBuild = require('workbox-build');
+let gulp = require('gulp');
+let sass = require('gulp-sass');
+let concatCss = require('gulp-concat-css');
+let del = require('del');
+let useRef = require('gulp-useref');
+let gulpIf = require('gulp-if');
+let uglify = require('gulp-uglify');
+let cleanCss = require('gulp-clean-css');
+let babel = require('gulp-babel');
+let purify = require('gulp-purifycss');
+let workboxBuild = require('workbox-build');
 
 let browserSync = require('browser-sync').create();
 
@@ -46,9 +46,9 @@ let tasks = {
  */
 gulp.task(tasks.html, function () {
     return gulp.src(paths.html.src)
-        .pipe(useref())
-        .pipe(gulpif('*.js', babel({presets: ['@babel/env']})))
-        .pipe(gulpif('*.js', uglify()))
+        .pipe(useRef())
+        .pipe(gulpIf('*.js', babel({presets: ['@babel/env']})))
+        .pipe(gulpIf('*.js', uglify()))
         .on('error', (error) => console.error(error))
         .pipe(gulp.dest(paths.html.dest))
         .pipe(browserSync.stream())
@@ -60,9 +60,9 @@ gulp.task(tasks.html, function () {
 gulp.task(tasks.scss, function () {
     return gulp.src(paths.scss.src)
         .pipe(sass())
-        .pipe(purify(['src/**/*.js', 'src/**/*.html']))
-        .pipe(minifyCss())
         .pipe(concatCss("styles.min.css"))
+        .pipe(purify(['src/**/*.js', 'src/**/*.html'], {minify: true}))
+        .pipe(cleanCss({level: {1: {specialComments: 0}}}))
         .pipe(gulp.dest(paths.scss.dest))
         .pipe(browserSync.stream())
 });
@@ -91,8 +91,6 @@ gulp.task('service-worker', () => {
             '**/*.{html,css,js,png,svg,jpeg,json}',
         ],
         ignoreUrlParametersMatching: [/^id/],
-        clientsClaim: true,
-        skipWaiting: true,
         runtimeCaching: [
             {
                 /* Google Fonts */
